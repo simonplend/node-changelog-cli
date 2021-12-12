@@ -24,6 +24,7 @@
  *   * \[[`06916490af`](https://github.com/nodejs/node/commit/06916490af)] - **(SEMVER-MINOR)** **async\_hooks**: expose async\_wrap providers (Rafael Gonzaga) [#40760](https://github.com/nodejs/node/pull/40760)
  */
 
+const assert = require("assert");
 const { readFile } = require("fs/promises");
 
 async function getVersionReleases(version) {
@@ -81,20 +82,17 @@ async function getVersionReleases(version) {
 	return releases.reverse();
 }
 
-async function main() {
-	const versions = [12, 13, 14, 15, 16, 17];
+async function main(searchTerm) {
+	const versions = [10, 11, 12, 13, 14, 15, 16, 17];
 	const releases = [];
 	for (let version of versions) {
 		releases.push(...await getVersionReleases(version));
 	}
 
-	const searchTerm = process.argv[2];
-	const searchTermLowerCase = searchTerm.toLowerCase();
-
 	const searchResults = [];
 	for (let release of releases) {
 		const matchingCommits = release.commits.filter(commit => {
-			return commit.title.toLowerCase().includes(searchTermLowerCase);
+			return commit.title.toLowerCase().includes(searchTerm);
 		});
 
 		if (matchingCommits.length > 0) {
@@ -111,4 +109,8 @@ async function main() {
 	}
 }
 
-main();
+let searchTerm = process.argv[2];
+assert(typeof searchTerm === "string" && searchTerm.length > 0, "Error: Missing search term. Example: ncl abort");
+searchTerm = searchTerm.toLowerCase();
+
+main(searchTerm);

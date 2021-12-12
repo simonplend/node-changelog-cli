@@ -1,14 +1,24 @@
-# Node.js Changelog Search CLI (Experimental)
+# Node.js Changelog CLI (Experimental)
 
-> Command line tool for searching through commits in Node.js releases.
+> Command line tool for viewing and searching through Node.js release changelogs.
 
-⚠️ Warning: This project is experimental and it definitely has a bunch of bugs!
+⚠️ Note: Highly experimental, expect bugs. See [Current Limitations](#current-limitations) and [TODO](#TODO).
 
 ## Usage
+
+Run it directly from GitHub:
 
 ```sh
 npx github:simonplend/node-changelog-cli <SEARCH_TERM>
 ```
+
+Or install it globally:
+
+```sh
+npm install -g github:simonplend/node-changelog-cli
+```
+
+Then you can run it with the command `ncs`.
 
 ## Examples
 
@@ -37,6 +47,8 @@ v16.7.0 - Version 16.7.0 (Current) (2021-08-17)
 
 ### Search for "json import"
 
+You must quote search terms which contain spaces:
+
 ```
 $ npx github:simonplend/node-changelog-cli "json import"
 
@@ -44,16 +56,22 @@ v17.1.0 - Version 17.1.0 (Current) (2021-11-09)
   - add support for JSON import assertion (Antoine du Hamel) (semver-minor, esm) - https://github.com/nodejs/node/pull/40250
 ```
 
+## Current Limitations
+
+- Only searches changelogs for Node.js v10, v11, v12, v13, v14, v15, v16, v17.
+- Only returns commits where the search term is an exact match (case insensitive).
+- Uses a handful of regular expressions to parse Markdown changelog files. Calibrate your expectations accordingly!
+
 ## TODO
 
-- [ ] Find out which releases the commit parsing is failing on
+- [ ] Bug: Commit parsing fails on some releases
 - [ ] Split out author from commit title (format: `Title (Author)`)
 - [ ] Stop embedding the changelog files in this package
 - [ ] Improve the filtering for unique commit IDs
 - [ ] Validate the command line arguments
 - [ ] Add colours to the search results
 
-## CLI interface ideas
+### CLI Ideas
 
 ```sh
 ncl search --release-line 17 abort
