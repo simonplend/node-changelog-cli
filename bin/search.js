@@ -25,64 +25,18 @@
  */
 
 const assert = require("assert");
-const { readFile } = require("fs/promises");
 
-async function getVersionReleases(version) {
-	const changelog = await readFile(
-		`${__dirname}/../changelogs/CHANGELOG_V${version}.md`,
-		{ encoding: "utf-8" }
-	);
+const { getVersionReleases } = require("../lib/get-version-releases.js");
 
-	let parsedReleases = changelog.split(/<a id="(.+)"><\/a>/gm);
-	parsedReleases.splice(0, 1);
+// async function main(version) {
+// 	const releases = await getVersionReleases(version);
 
-	const releases = [];
+// 	console.log(JSON.stringify(releases));
+// }
 
-	for (let i = 0; i < parsedReleases.length; i += 2) {
-		const releaseBody = parsedReleases[i + 1].trim();
+// main(process.argv[2]);
 
-		let releaseMetadata =
-			/## (?<date>[0-9]{4}-[0-9]{2}-[0-9]{2}), (?<name>[^,]+), (?<releaser>@.+)\n/gm.exec(
-				releaseBody
-			);
-		releaseMetadata = releaseMetadata.groups;
-
-		let releaseCommits = releaseBody.matchAll(
-			/\* \\\[\[`(?<commit_id>[a-z0-9]+)`\]\((?<commit_url>[^)]+)\)\] - \*\*(?<metadata>[^:]+)\*\*: (?<title>[^\[]+) \[(?<pr_number>#[^\]]+)\]\((?<pr_url>[^\(]+)\)/gm
-		);
-		
-		releaseCommits = Array.from(releaseCommits).map((commit) => {
-			commit.groups.metadata = commit.groups.metadata
-				.replace(/\*\*/g, "")
-				.replace(/[\\\(\)]/g, "")
-				.toLowerCase()
-				.split(" ");
-
-			commit.groups.title = commit.groups.title.replace(/\\/g, "");
-
-			return commit.groups;
-		});
-
-		releaseCommits = releaseCommits.reduce((acc, x) =>
-			acc.concat(acc.find(y => y.commit_id === x.commit_id) ? [] : [x])
-		, []);
-
-		const release = {
-			version: parsedReleases[i],
-			date: releaseMetadata.date,
-			name: releaseMetadata.name,
-			releaser: releaseMetadata.releaser,
-			commits: releaseCommits,
-			// releaseNotes: releaseBody,
-		};
-
-		releases.push(release);
-	}
-
-	return releases.reverse();
-}
-
-async function main(searchTerm) {
+async function searchAllReleases(searchTerm) {
 	const versions = [10, 11, 12, 13, 14, 15, 16, 17];
 	const releases = [];
 	for (let version of versions) {
@@ -113,4 +67,4 @@ let searchTerm = process.argv[2];
 assert(typeof searchTerm === "string" && searchTerm.length > 0, "Error: Missing search term. Example: ncl abort");
 searchTerm = searchTerm.toLowerCase();
 
-main(searchTerm);
+searchAllReleases(searchTerm);

@@ -6,26 +6,30 @@
 
 ## Usage
 
-Run it directly from GitHub:
-
-```sh
-npx github:simonplend/node-changelog-cli <SEARCH_TERM>
-```
-
-Or install it globally:
+Install this package globally:
 
 ```sh
 npm install -g github:simonplend/node-changelog-cli
 ```
 
-Then you can run it with the command `ncs`.
+Pull down the Node.js changelogs (cached under `~/.cache/node-changelog-cli/`):
+
+```bash
+ncl-refresh
+```
+
+Then run the CLI with `ncl` (or `npx ncl`), for example:
+
+```sh
+ncl <SEARCH_TERM>
+```
 
 ## Examples
 
 ### Search for "randomuuid"
 
 ```
-$ npx github:simonplend/node-changelog-cli randomuuid
+$ ncl randomuuid
 
 v14.17.0 - Version 14.17.0 'Fermium' (LTS) (2021-05-11)
   - implement randomuuid (James M Snell) (semver-minor, crypto) - https://github.com/nodejs/node/pull/36729
@@ -50,7 +54,7 @@ v16.7.0 - Version 16.7.0 (Current) (2021-08-17)
 You must quote search terms which contain spaces:
 
 ```
-$ npx github:simonplend/node-changelog-cli "json import"
+$ ncl "json import"
 
 v17.1.0 - Version 17.1.0 (Current) (2021-11-09)
   - add support for JSON import assertion (Antoine du Hamel) (semver-minor, esm) - https://github.com/nodejs/node/pull/40250
@@ -74,11 +78,21 @@ v17.1.0 - Version 17.1.0 (Current) (2021-11-09)
 ### CLI Ideas
 
 ```sh
-ncl search --release-line 17 abort
+ncl search --release 17 abort
 
-ncl search --release-line 12/14/16 abort
+ncl search --release 12/14/16 abort
 
-ncl view --release-line 14
+ncl view --release 14
 
 ncl view --release 14.13.0
 ```
+
+### Project ideas
+
+- Create a web UI
+- Covert this project into a monorepo
+  - apps
+    - website
+  - packages
+    - data
+    - cli 

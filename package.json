@@ -4,7 +4,8 @@
   "description": "",
   "bin": {
     "node-changelog-cli": "bin/search.js",
-    "ncl": "bin/search.js"
+    "ncl": "bin/search.js",
+    "ncl-refresh": "./scripts/pull-changelogs.mjs"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
