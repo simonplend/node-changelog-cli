@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "bin": {
-    "node-changelog-cli": "bin/search.js",
-    "ncl": "bin/search.js",
+    "node-changelog-cli": "bin/cli.js",
+    "ncl": "bin/cli.js",
     "ncl-refresh": "./scripts/pull-changelogs.mjs"
   },
   "scripts": {
