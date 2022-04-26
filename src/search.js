@@ -1,7 +1,7 @@
 const assert = require("node:assert");
 
-const { searchAllReleases } = require("./search-all-releases.js");
-const { getVersionReleases } = require("./get-version-releases.js");
+const { searchAllReleases } = require("./lib/search-all-releases.js");
+const { getVersionReleases } = require("./lib/get-version-releases.js");
 
 async function search(searchTerm) {
 	assert(
