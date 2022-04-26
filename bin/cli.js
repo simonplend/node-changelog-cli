@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-const { search } = require("../lib/search.js");
+const { search } = require("../src/search.js");
 
 search(process.argv[2]);
