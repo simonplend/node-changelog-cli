@@ -1,13 +1,6 @@
 #!/usr/bin/env node
 
-import * as fs from "node:fs";
-import * as path from "node:path";
-import * as stream from "node:stream";
-
-const cacheDirectoryPath = path.join(
-	process.env.HOME || process.env.USERPROFILE,
-	".cache/node-changelog-cli/"
-);
+import { getChangelogWriteStream } from "../src/lib/cache.js";
 
 const firstVersion = 4;
 const lastVersion = 18;
@@ -17,16 +10,13 @@ for (let version = firstVersion; version <= lastVersion; version++) {
 
 	console.log(`Downloading changelog for Node.js v${version}...`);
 
-	const outputChangelogPath = path.join(
-		cacheDirectoryPath,
-		`CHANGELOG_V${version}.md`
-	);
-
 	const changelogResponse = await fetch(changelogUrl);
 	changelogResponse.body.pipeTo(
-		stream.Writable.toWeb(fs.createWriteStream(outputChangelogPath))
+		getChangelogWriteStream(`CHANGELOG_V${version}.md`)
 	);
 }
+
+// ----
 
 // TODO: Write a `status.json`
 // { cache_last_refreshed: "2022-04-24T17:23:00.000Z", changelogs: [{ version: "X", downloaded: "DATE" }] }

@@ -1,16 +1,7 @@
-const { readFile } = require("node:fs/promises");
-const path = require("node:path");
-
-const cacheDirectoryPath = path.join(
-	process.env.HOME || process.env.USERPROFILE,
-	".cache/node-changelog-cli/"
-);
+const { getChangelog } = require("./cache.js");
 
 async function getVersionReleases(version) {
-	const changelog = await readFile(
-		path.join(cacheDirectoryPath, `CHANGELOG_V${version}.md`),
-		{ encoding: "utf-8" }
-	);
+	const changelog = await getChangelog(`CHANGELOG_V${version}.md`);
 
 	let parsedReleases = changelog.split(/<a id="(.+)"><\/a>/gm);
 	parsedReleases.splice(0, 1);
